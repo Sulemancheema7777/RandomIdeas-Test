@@ -1,0 +1,14 @@
+{
+  "name": "randomideas",
+  "version": "1.0.0",
+  "description": "randomIdeas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Suleman",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
