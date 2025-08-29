@@ -1,27 +1,16 @@
-const path = require('path');
 const express  =  require('express');
-const ideasRouter = require('./routes/ideas.js');
-require('dotenv').config();
+const ideasRouter = require('./routes/ideas');
 const app = express();
-const connectedDB = require('./config/db.js');
 
-const port = process.env.PORT || 5000;
+const port = 5000;
 
-
-
-
-//middleware for specifying the static folder
-app.use(express.static(path.join(__dirname,'public')));
-
-// middleware so that when we submit data from form we can read it in the backend
-app.use(express.json());
-app.use(express.urlencoded({extended:false}));
 
 app.get('/',(req,res)=>{
     res.send('Hello to the Random Ideas Portal');
 });
 
-// middleware for routes
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 app.use('/api/ideas',ideasRouter);
 
 
