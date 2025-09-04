@@ -28,7 +28,7 @@ router.get('/:id',async (req,res)=>{
 router.post('/',async (req,res)=>{
 
     const idea = new Idea({
-        userName:req.body.userName,
+        username:req.body.username,
         title:req.body.title,
         tag:req.body.tag
     });
@@ -45,31 +45,42 @@ router.post('/',async (req,res)=>{
 
 router.put('/:id',async (req,res)=>{
 
+        
     try {
-        const updatedIdea = await Idea.findByIdAndUpdate(
-            req.params.id,
-            {
-                $set:{
-                    title:req.body.title,
-                    tag:req.body.tag
-                }
-            },
-            {new:true}
-        );
-        res.json({success:true,data:updatedIdea});
+            const idea = await Idea.findById(req.params.id);
+            if(idea.username === req.params.username){
 
-    } catch (err) {
+                const updatedIdea = await Idea.findByIdAndUpdate(
+                    req.params.id,
+                    {
+                        $set:{
+                            title:req.body.title,
+                            tag:req.body.tag
+                        }
+                    },
+                    {new:true}
+                );
+                return res.json({success:true,data:updatedIdea});
+            }
+            res.status(403).json({success:false,error:'You are not authorized to update this resource'});
+        }
+     catch (err) {
         res.status(500).json({success:true,error:`${err} fix it`});
     }
 
 });
 
 router.delete('/:id',async (req,res)=>{
-
     try {
-        await Idea.findByIdAndDelete(req.params.id);
-        res.json({success:true,data:{}});
-    } catch (err) {
+        const idea = await Idea.findById(req.params.id);
+        if(idea.username === req.body.username){
+            await Idea.findByIdAndDelete(req.params.id);
+            return res.json({success:true,data:{}});
+        }
+        res.status(403).json({success:false,error:'You are not authorized to delete this resource.'});
+    } 
+    
+    catch (err) {
         res.status(500).json({success:true,error:`${err} fix it`});
     }
 });

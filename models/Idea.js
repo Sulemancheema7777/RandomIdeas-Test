@@ -8,7 +8,7 @@ const IdeaSchema = new mongoose.Schema({
  tag:{
     type:String
  },
- userName:{
+ username:{
     type:String
  },
  date:{
